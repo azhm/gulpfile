@@ -1,0 +1,19 @@
+{
+  "name": "gulp",
+  "description": "",
+  "main": "",
+  "authors": [
+    "储涛 <chutao97@gmail.com>"
+  ],
+  "license": "none",
+  "homepage": "https://github.com/azhm/gulpfile",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

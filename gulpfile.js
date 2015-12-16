@@ -11,7 +11,7 @@ var gulp = require('gulp'),
     minifyCss = require('gulp-minify-css'),//文件合并成一行
     autoprefixer = require('gulp-autoprefixer'),//根据设置浏览器版本自动处理浏览器前缀
     livereload = require('gulp-livereload'),
-    rename = require('gulp-rename'),//压缩添加.min
+    //rename = require('gulp-rename'),//压缩添加.min
     copy = require('gulp-copy'),//copy文件
     imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),//图片压缩
@@ -152,7 +152,7 @@ gulp.task('js-css-merger', function () {
 gulp.task('default', ['less', 'watch']); //定义默认任务
 
 
-gulp.task('test-copy', ['copy', 'html']); //定义默认任务
+//gulp.task('test-copy', ['copy', 'html']); //定义默认任务
 
 
 gulp.task('dist-cdn', ['js-css-merger', 'cdn', 'copy', 'images', 'manifest']); //项目定义cdn压缩任务
