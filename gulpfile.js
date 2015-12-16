@@ -1,23 +1,23 @@
-/**
- * authors by 储涛 on 15/12/7.
- */
+/*
+*
+* authors by 储涛 on 15/12/7.
+*/
 
 //引入插件
 var gulp = require('gulp'),
-    less = require('gulp-less'),//less编译插件
-    htmlmin = require('gulp-htmlmin'),//html压缩插件
-    uglify = require('gulp-uglify'),//压缩js插件
-    concat = require('gulp-concat'),//文件合并插件
-    minifyCss = require('gulp-minify-css'),//文件合并成一行
-    autoprefixer = require('gulp-autoprefixer'),//根据设置浏览器版本自动处理浏览器前缀
+    less = require('gulp-less'),
+    htmlmin = require('gulp-htmlmin'),
+    uglify = require('gulp-uglify'),
+    concat = require('gulp-concat'),
+    minifyCss = require('gulp-minify-css'),
+    autoprefixer = require('gulp-autoprefixer'),
     livereload = require('gulp-livereload'),
-    //rename = require('gulp-rename'),//压缩添加.min
-    copy = require('gulp-copy'),//copy文件
+    copy = require('gulp-copy'),
     imagemin = require('gulp-imagemin'),
-    pngquant = require('imagemin-pngquant'),//图片压缩
-    clean = require('gulp-clean'), //文件清理
-    cdn = require('gulp-cdn-replace'),//cdn
-    manifest = require('gulp-manifest'),//页面缓存
+    pngquant = require('imagemin-pngquant'),
+    clean = require('gulp-clean'),
+    cdn = require('gulp-cdn-replace'),
+    manifest = require('gulp-manifest'),
     useref = require('gulp-useref'),
     gulpif = require('gulp-if');
 
@@ -29,6 +29,12 @@ var config = {
     cdn: 'http://images-menma-me.b0.upaiyun.com/yxh.realty.menma.me/microloushu/'
 };
 
+
+///清空图片、样式、js
+gulp.task('clean', function () {
+    return gulp.src(config.distPath + '/', {read: false})
+        .pipe(clean());
+});
 
 //离线缓存
 gulp.task('manifest', function () {
@@ -67,7 +73,7 @@ gulp.task('cdn', function () {
 //livereload浏览器同步刷新
 gulp.task('watch', function () {
     livereload.listen();
-    gulp.watch([config.app + '*.html'], function (event) {
+    gulp.watch(config.appPath + '/**/*.*', function (event) {
         livereload.changed(event.path);
     });
     gulp.watch(config.appPath + 'assets/less/*.less', ['less']);
@@ -75,19 +81,22 @@ gulp.task('watch', function () {
 
 
 //文件拷贝
-gulp.task('copy', function () {   // copy files
-    return gulp.src(config.appPath + 'libs/**')
-        .pipe(gulp.dest(config.distPath + 'libs/'));
-});
-
-gulp.task('list', ['copy'], function () {
+gulp.task('copy', function () {
     //配置需要copy的文件
-    return gulp.src([
-            config.appPath+'/tongji.php',
-            config.appPath+'/favicon.ico'
-    ])
+    return gulp.src(config.appPath + 'favicon.ico')
         .pipe(gulp.dest(config.distPath + '/'));
 });
+
+
+//配置copy多个文件但是路径不一样可这样配置
+//gulp.task('list', ['copy'], function () {
+
+//    return gulp.src([
+//            config.appPath+'/tongji.php',
+//            config.appPath+'/favicon.ico'
+//    ])
+//        .pipe(gulp.dest(config.distPath + '/'));
+//});
 
 
 //图片压缩
@@ -102,17 +111,10 @@ gulp.task('images', function () {
 });
 
 
-//清空图片、样式、js
-gulp.task('clean', function () {
-    return gulp.src([config.distPath + '/'], {read: false})
-        .pipe(clean({force: true}));
-});
-
-
 //Less编译
 gulp.task('less', function () {
-    gulp.src(config.appPath + 'assets/less/app.less') //该任务针对的文件
-        .pipe(less()) //该任务调用的模块
+    gulp.src(config.appPath + 'assets/less/app.less')
+        .pipe(less())
         .pipe(gulp.dest(config.appPath + 'assets/css'))
         .pipe(livereload())
 
@@ -151,10 +153,6 @@ gulp.task('js-css-merger', function () {
 
 gulp.task('default', ['less', 'watch']); //定义默认任务
 
+gulp.task('dist-cdn', ['copy', 'images', 'js-css-merger', 'cdn', 'manifest']); //项目定义dist-cdn压缩任务
 
-//gulp.task('test-copy', ['copy', 'html']); //定义默认任务
-
-
-gulp.task('dist-cdn', ['js-css-merger', 'cdn', 'copy', 'images', 'manifest']); //项目定义cdn压缩任务
-
-gulp.task('dist', ['copy','list','js-css-merger','images', 'manifest']); //项目dist压缩任务
+gulp.task('dist', ['copy', 'images', 'js-css-merger', 'manifest']); //项目dist压缩任务
