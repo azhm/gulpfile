@@ -1,8 +1,8 @@
 {
   "name": "gulp",
   "version": "0.0.0",
-  "w": [
-    "chutao97@gmail.com"
+  "authors": [
+    "储涛 <chutao97@gmail.com>"
   ],
   "license": "none",
   "ignore": [
@@ -14,7 +14,6 @@
   ],
   "dependencies": {
     "tp.zepto": "*",
-    "tp": "*",
     "tp.motion": "*",
     "animate.css": "~3.4.0"
   }
